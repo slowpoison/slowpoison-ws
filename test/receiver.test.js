@@ -1011,4 +1011,28 @@ describe('Receiver', () => {
       }).forEach((buf) => receiver.write(buf));
     });
   });
+
+  it('counts bytes received', (done) => {
+    const receiver = new Receiver(undefined, {}, true);
+    const msg = 'A'.repeat(200);
+
+    const list = Sender.frame(Buffer.from(msg), {
+      fin: true,
+      rsv1: false,
+      opcode: 0x01,
+      mask: true,
+      readOnly: false
+    });
+
+    const frame = Buffer.concat(list);
+
+    receiver.on('message', (data) => {
+      assert.strictEqual(data, msg);
+      assert.strictEqual(receiver.bytesReceived, frame.length);
+      done();
+    });
+
+    receiver.write(frame.slice(0, 2));
+    setImmediate(() => receiver.write(frame.slice(2)));
+  });
 });

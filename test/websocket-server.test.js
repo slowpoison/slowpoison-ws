@@ -734,6 +734,7 @@ describe('WebSocketServer', () => {
     });
 
     it('handles data passed along with the upgrade request', (done) => {
+      let frame = null;
       const wss = new WebSocket.Server({ port: 0 }, () => {
         const req = http.request({
           port: wss.address().port,
@@ -753,13 +754,15 @@ describe('WebSocketServer', () => {
           readOnly: false
         });
 
-        req.write(Buffer.concat(list));
+        frame = Buffer.concat(list);
+        req.write(frame);
         req.end();
       });
 
       wss.on('connection', (ws) => {
         ws.on('message', (data) => {
           assert.strictEqual(data, 'Hello');
+          assert.strictEqual(ws.bytesReceived, frame.length);
           wss.close(done);
         });
       });
