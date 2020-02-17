@@ -1,7 +1,7 @@
 {
-  "name": "ws",
+  "name": "slowpoison-ws",
   "version": "7.2.1",
-  "description": "Simple to use, blazing fast and thoroughly tested websocket client and server for Node.js",
+  "description": "An enhanced websockets/ws",
   "keywords": [
     "HyBi",
     "Push",
@@ -10,10 +10,17 @@
     "WebSockets",
     "real-time"
   ],
-  "homepage": "https://github.com/websockets/ws",
-  "bugs": "https://github.com/websockets/ws/issues",
-  "repository": "websockets/ws",
+  "homepage": "https://github.com/slowpoison/slowpoison-ws",
+  "bugs": "https://github.com/slowpoison/slowpoison-ws/issues",
+  "repository": "slowpoison/slowpoison-ws",
   "author": "Einar Otto Stangvik <einaros@gmail.com> (http://2x.io)",
+  "contributors": [
+    {
+      "email": "vish@slowpoison.net",
+      "name": "Vishal Verma",
+      "url": "http://www.slowpoison.net"
+    }
+  ],
   "license": "MIT",
   "main": "index.js",
   "browser": "browser.js",
