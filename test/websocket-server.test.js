@@ -762,7 +762,7 @@ describe('WebSocketServer', () => {
       wss.on('connection', (ws) => {
         ws.on('message', (data) => {
           assert.strictEqual(data, 'Hello');
-          assert.strictEqual(ws.bytesReceived, frame.length);
+          assert.strictEqual(ws.bytesTxRx, frame.length);
           wss.close(done);
         });
       });

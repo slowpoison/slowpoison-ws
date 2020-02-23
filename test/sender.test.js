@@ -47,6 +47,33 @@ describe('Sender', () => {
     });
   });
 
+  it('counts bytes sent', () => {
+    const perMessageDeflate = new PerMessageDeflate({ threshold: 0 });
+    const msg = 'A'.repeat(200);
+    const options = { compress: false, fin: true };
+
+    const mockSocket = new MockSocket();
+    const sender = new Sender(mockSocket, {
+      'permessage-deflate': perMessageDeflate
+    });
+    perMessageDeflate.accept([{}]);
+
+    const list = Sender.frame(Buffer.from(msg), options);
+    sender.sendFrame(list);
+    const frameBuffer = Buffer.concat(list);
+    assert.strictEqual(sender.bytesSent, frameBuffer.length);
+
+    const msgPlain = 'hi';
+    sender.send(msgPlain, options);
+    const msgPlainBuffer = Buffer.concat(
+      Sender.frame(Buffer.from(msgPlain), options)
+    );
+    assert.strictEqual(
+      sender.bytesSent,
+      frameBuffer.length + msgPlainBuffer.length
+    );
+  });
+
   describe('#send', () => {
     it('compresses data if compress option is enabled', (done) => {
       const perMessageDeflate = new PerMessageDeflate({ threshold: 0 });
